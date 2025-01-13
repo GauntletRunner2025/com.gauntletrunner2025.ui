@@ -49,7 +49,7 @@ public abstract partial class UIElementSystem<T, U> : SystemBase
 
         //Create a representation of the UI element in ECS space
         BackingEntity = EntityManager.CreateEntity();
-        Debug.Log($"UI element [{Name}] represented as entity [{BackingEntity}]");
+        // Debug.Log($"UI element [{Name}] represented as entity [{BackingEntity}]");
 
         //Name the backing entity
         EntityManager.AddComponentData(BackingEntity, new U {
