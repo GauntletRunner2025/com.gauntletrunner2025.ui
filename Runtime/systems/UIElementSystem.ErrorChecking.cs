@@ -2,52 +2,50 @@ using Unity.Entities;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public abstract partial class UIElementSystem<T, U> : SystemBase {
-    private bool GetUIDocument(out UIDocument uiDocument, out VisualElement root) {
+public abstract partial class UIElementSystem<T, U> : SystemBase
+{
+    protected void LogError(string message)
+    {
+        if (WaitMode == WaitModeEnum.DoNotWait)
+        {
+            Log(message, LogType.Error);
+            this.Enabled = false;
+        }
+    }
+
+    private bool GetUIDocument(out UIDocument uiDocument, out VisualElement root)
+    {
         uiDocument = GameObject.FindAnyObjectByType<UIDocument>();
-        if (uiDocument == null) {
-            Debug.LogError("UIDocument not found in the scene.");
+        if (uiDocument == null)
+        {
+            LogError($"[{GetType().Name}] UIDocument not found in the scene.");
             root = null;
-            this.Enabled = false;
             return false;
-        } else {
-            root = uiDocument.rootVisualElement;
         }
 
-
+        root = uiDocument.rootVisualElement;
         return true;
     }
 
-    private bool LoadFromFile() {
-        //this.Name is the name of the file- it should exist anywhere below a folder named Resources
-        var asset = Resources.Load<VisualTreeAsset>(Name);
-        if (asset == null) {
-            Debug.LogError($"[{this.GetType().Name}]: UI VisualTreeAsset [{Name}] not found.");
-            this.Enabled = false;
-            return false;
-        }
-
-        //Clone the asset but do not add it to the parent
-        var visualElement = asset.Instantiate();
-
-        this.Element = visualElement.Q<T>(Name);
-
-        if (Element == null) {
-            Debug.LogError($"[{this.GetType().Name}]: [{typeof(T)}] [{Name}] not found in loaded file");
-            this.Enabled = false;
-            return false;
-        }
-
-        return true;
-    }
-    private bool GetUIElement(VisualElement root) {
-        this.Element = root.Q<T>(Name);
-        if (Element == null) {
-            Debug.LogError($"[{this.GetType().Name}]: [{typeof(T)}] [{Name}] not found ");
-            this.Enabled = false;
+    private bool LoadFromFile()
+    {
+        Element = new T();
+        if (Element == null)
+        {
+            LogError($"Failed to create new instance of UI Element type {typeof(T).Name}");
             return false;
         }
         return true;
     }
 
+    private bool GetUIElement(VisualElement root)
+    {
+        Element = root.Q<T>(Name);
+        if (Element == null)
+        {
+            LogError($"UI Element '{Name}' of type {typeof(T).Name} not found in the tree.");
+            return false;
+        }
+        return true;
+    }
 }
