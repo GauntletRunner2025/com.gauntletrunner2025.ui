@@ -80,11 +80,17 @@ public abstract partial class UIElementSystem<T, U> : SystemBase
         Initialize(root, Element);
     }
 
-    protected override void OnUpdate()
+    protected abstract void DoUpdate();
+
+    protected sealed override void OnUpdate()
     {
         if (WaitMode == WaitModeEnum.Wait && BackingEntity == Entity.Null)
         {
             TrySetup();
+        }
+        else if (BackingEntity != Entity.Null)
+        {
+            DoUpdate();
         }
     }
 }
