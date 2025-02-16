@@ -12,6 +12,11 @@ namespace Gauntletrunner2025.Ui.Tests
         protected override string Name => "TestButton";
         protected override ElementSourceMode SourceMode => ElementSourceMode.ExistsInTree;
         protected override WaitModeEnum WaitMode => WaitModeEnum.Wait;
+
+        protected override void DoUpdate()
+        {
+        }
+
         protected override void Initialize(VisualElement root, Button element) { }
     }
 
@@ -20,6 +25,11 @@ namespace Gauntletrunner2025.Ui.Tests
         protected override string Name => "TestButton";
         protected override ElementSourceMode SourceMode => ElementSourceMode.ExistsInTree;
         protected override WaitModeEnum WaitMode => WaitModeEnum.DoNotWait;
+
+        protected override void DoUpdate()
+        {
+        }
+
         protected override void Initialize(VisualElement root, Button element) { }
     }
 
@@ -28,6 +38,11 @@ namespace Gauntletrunner2025.Ui.Tests
         protected override string Name => "TestButton";
         protected override ElementSourceMode SourceMode => ElementSourceMode.ExistsInTree;
         protected override WaitModeEnum WaitMode => WaitModeEnum.Wait;
+
+        protected override void DoUpdate()
+        {
+        }
+
         protected override void Initialize(VisualElement root, Button element) { }
     }
 
